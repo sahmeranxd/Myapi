@@ -1,0 +1,7 @@
+{
+  "type": "module",
+  "dependencies": {
+    "node-fetch": "^2.6.9",
+    "node-html-parser": "^6.1.11"
+  }
+}

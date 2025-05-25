@@ -1,18 +1,32 @@
-const axios = require('axios');
+export default async function handler(req, res) {
+  const { tc } = req.method === 'GET' ? req.query : req.body;
 
-module.exports = async function handler(req, res) {
-  const { tc } = req.query;
-  if (!tc) return res.status(400).json({ error: 'tc parametresi gerekli' });
+  if (!tc) {
+    return res.status(400).json({ error: 'tc parametresi zorunludur' });
+  }
 
   try {
-    const response = await axios.get(`https://api.hexnox.pro/sowixapi/aile.php?tc=${encodeURIComponent(tc)}`, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0' // bazı sunucular boş User-Agent'te engeller
-      }
-    });
-    const data = response.data.data || response.data;
-    res.status(200).json({ message: "ig: @ato.asd", data });
-  } catch (e) {
-    res.status(500).json({ error: 'API request failed', detail: e.message });
+    const url = https://api.hexnox.pro/sowixapi/tcpro.php?tc=${encodeURIComponent(tc)};
+    const response = await fetch(url);
+    const json = await response.json();
+    const data = json.data;
+
+    let output = '';
+    
+    // İlk satır: sadece telegram objesi
+    output += JSON.stringify({ telegram: "@Saltanatisiken" }, null, 2) + '\n\n';
+
+    // Diğer her veri: tek satırda JSON objesi
+    for (const [key, value] of Object.entries(data)) {
+      output += JSON.stringify({ [key]: value }) + '\n';
+    }
+
+    res.status(200)
+      .setHeader('Content-Type', 'text/plain')
+      .send(output);
+  } catch (err) {
+    res.status(500).json({ error: 'API request failed', detail: err.message });
   }
-};
+}
+
+su kodu kullan

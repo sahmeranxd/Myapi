@@ -5,7 +5,11 @@ module.exports = async function handler(req, res) {
   if (!tc) return res.status(400).json({ error: 'tc parametresi gerekli' });
 
   try {
-    const response = await axios.get(`https://api.hexnox.pro/sowixapi/aile.php?tc=${encodeURIComponent(tc)}`);
+    const response = await axios.get(`https://api.hexnox.pro/sowixapi/aile.php?tc=${encodeURIComponent(tc)}`, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0' // bazı sunucular boş User-Agent'te engeller
+      }
+    });
     const data = response.data.data || response.data;
     res.status(200).json({ message: "ig: @ato.asd", data });
   } catch (e) {

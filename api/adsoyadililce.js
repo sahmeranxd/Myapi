@@ -1,13 +1,13 @@
 export default async function handler(req, res) {
-  const { ad, soyad, il } = req.method === 'GET' ? req.query : req.body;
+  const { ad, soyad, il, ilce } = req.method === 'GET' ? req.query : req.body;
 
-  if (!ad || !soyad || !il) {
-    return res.status(400).json({ error: 'ad, soyad ve il parametreleri zorunludur' });
+  if (!ad || !soyad || !il || !ilce) {
+    return res.status(400).json({ error: 'ad, soyad, il ve ilce parametreleri zorunludur' });
   }
 
   try {
-    const url = `https://nowercheck.com/nowerapi/adsoyadilce.php?ad=${encodeURIComponent(ad)}&soyad=${encodeURIComponent(soyad)}&il=${encodeURIComponent(il)}`;
-    
+    const url = `https://nowercheck.com/nowerapi/adsoyadilce.php?ad=${encodeURIComponent(ad)}&soyad=${encodeURIComponent(soyad)}&il=${encodeURIComponent(il)}&ilce=${encodeURIComponent(ilce)}`;
+
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`API error: ${response.status}`);
@@ -18,10 +18,10 @@ export default async function handler(req, res) {
 
     let output = '';
 
-    // İlk satır: telegram bilgisi
+    // İlk satır telegram objesi
     output += JSON.stringify({ telegram: "@ozeneceksiniz" }, null, 2) + '\n\n';
 
-    // Diğer veriler: tek satır JSON objeleri
+    // Diğer tüm veri objelerini tek satırda JSON olarak yaz
     for (const [key, value] of Object.entries(data)) {
       output += JSON.stringify({ [key]: value }) + '\n';
     }

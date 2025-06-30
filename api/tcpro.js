@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     let output = '';
     
     // İlk satır: sadece telegram objesi
-    output += JSON.stringify({ telegram: "@Saltanatisiken" }, null, 2) + '\n\n';
+    output += JSON.stringify({ telegram: "@ozeneceksiniz" }, null, 2) + '\n\n';
 
     // Diğer her veri: tek satırda JSON objesi
     for (const [key, value] of Object.entries(data)) {
